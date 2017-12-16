@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WebSocket Chat</title>
+    <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/bulma/css/bulma.css">
+  </head>
+  <body>
+
+  <section class="hero is-info">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">
+          WebSocket Chat
+        </h1>
+        <h2 class="subtitle">
+          Manner maketh man
+        </h2>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="chat">
+    <div class="container" v-show="userName == ''">
+      <div class="field">
+        <label class="label">Name</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="Enter the name"
+                 @keyup.enter="enterName" :disabled="isDisconnected">
+        </div>
+      </div>
+    </div>
+
+    <div class="container" v-show="userName != ''">
+      <ul class="conten">
+        <li v-for="item in items">
+          ${ item.created_at } - ${ item.name }: ${ item.text }
+        </li>
+      </ul>
+      <div class="field">
+        <label class="label">Message</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="Enter the message"
+                 @keyup.enter="submit" :disabled="isDisconnected">
+        </div>
+        <p :class="helpClass">${ chatState }</p>
+      </div>
+    </div>
+  </section>
+
+  <script charset="utf-8" src="/static/vue/dist/vue.js"></script>
+  <script charset="utf-8" src="/static/moment/min/moment.min.js"></script>
+  <script charset="utf-8">
+  "use strict";
+  Vue.options.delimiters = ['${', '}'];
+
+  new Vue({
+    el: '#chat',
+    data: {
+      itemsMaxLen: 15,
+      items: [],
+      socket: null,
+      chatState: 'ready',
+      reconnectTimer: null,
+      userName: ''
+    },
+    computed: {
+      isDisconnected: function() {
+        return this.chatState == 'disconnected';
+      },
+      helpClass: function () {
+        return {
+          help: true,
+          'is-danger': this.isDisconnected
+        }
+      }
+    },
+    methods: {
+      submit: function(event) {
+        if (event.target.value == '') {
+          return false;
+        }
+
+        let message = JSON.stringify({
+           name: this.userName,
+           text: event.target.value,
+           created_ts: moment().format('X')
+        });
+
+        this.socket.send(message);
+        event.target.value = '';
+      },
+      enterName: function(event) {
+        if (event.target.value == '') {
+          return false;
+        }
+        this.userName = event.target.value;
+        event.target.value = '';
+      },
+      setCreatedAt: function(message) {
+        let dt = moment(message.created_ts, 'X');
+        message.created_at = dt.format('YYYY-MM-DD HH:mm:ss');
+      },
+      start: function() {
+        this.socket = new WebSocket("ws://{{ .Host }}/room");
+
+        this.socket.onopen = (event) => {
+          this.chatState = 'connected';
+          clearTimeout(this.reconnectTimer);
+        };
+
+        this.socket.onmessage = (event) => {
+          if (this.items.length == this.itemsMaxLen) {
+            this.items.splice(0, 1);
+          }
+          let message = JSON.parse(event.data);
+          this.setCreatedAt(message);
+          this.items.push(message);
+        };
+
+        this.socket.onclose = (event) => {
+          this.chatState = 'disconnected';
+          this.socket = null;
+          this.reconnectTimer = setTimeout(this.start, 2000);
+        };
+      }
+    },
+    mounted: function() {
+      this.start();
+    }
+  });
+  </script>
+  </body>
+</html>

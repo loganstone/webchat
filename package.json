@@ -1,0 +1,12 @@
+{
+  "name": "chat",
+  "version": "0.0.1",
+  "author": "Hyunsuk Lee <blackknight8012@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bulma": "^0.6.1",
+    "font-awesome": "^4.7.0",
+    "moment": "^2.19.4",
+    "vue": "^2.5.11"
+  }
+}
