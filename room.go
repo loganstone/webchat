@@ -13,10 +13,7 @@ const (
 )
 
 var upgrader = &websocket.Upgrader{ReadBufferSize: socketBufferSize,
-	WriteBufferSize: socketBufferSize,
-	CheckOrigin: func(r *http.Request) bool {
-		return true
-	}}
+	WriteBufferSize: socketBufferSize}
 
 type room struct {
 	forward chan []byte
