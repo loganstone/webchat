@@ -32,7 +32,7 @@ func test(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	var addr = flag.String("addr", ":8080", "The addr of the application.")
+	var host = flag.String("host", ":8080", "The host of the application.")
 	flag.Parse()
 
 	fs := http.FileServer(http.Dir("node_modules"))
@@ -45,8 +45,8 @@ func main() {
 
 	go r.run()
 
-	log.Println("Starting web server on", *addr)
-	if err := http.ListenAndServe(*addr, nil); err != nil {
+	log.Println("Starting web server on", *host)
+	if err := http.ListenAndServe(*host, nil); err != nil {
 		log.Fatal("ListenAndServe:", err)
 	}
 }
