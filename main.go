@@ -5,8 +5,11 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"sync"
+
+	"github.com/hyunsuk/trace"
 )
 
 type templateHandler struct {
@@ -34,6 +37,7 @@ func main() {
 
 	fs := http.FileServer(http.Dir("node_modules"))
 	r := newRoom()
+	r.tracer = trace.New(os.Stdout)
 
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	http.Handle("/", &templateHandler{filename: "chat.html"})
