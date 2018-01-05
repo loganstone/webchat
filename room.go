@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/websocket"
-	"github.com/hyunsuk/trace"
+	"github.com/loganstone/trace"
 )
 
 const (

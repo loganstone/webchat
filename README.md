@@ -15,7 +15,7 @@ $ brew install go
 ### Mac OSX
 * Get source code
 ```shell
-$ git clone git@github.com:hyunsuk/webchat.git
+$ git clone git@github.com:loganstone/webchat.git
 ```
 * Assets install
 ```shell

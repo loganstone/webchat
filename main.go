@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"sync"
 
-	"github.com/hyunsuk/trace"
+	"github.com/loganstone/trace"
 )
 
 type templateHandler struct {
