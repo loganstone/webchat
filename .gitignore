@@ -12,8 +12,9 @@
 
 # Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
 .glide/
-.DS_Store
 
-node_modules
+.DS_Store
+vendor/
+node_modules/
 
 webchat
