@@ -27,7 +27,7 @@ $ go build
 ```
 * Server run
 ```shell
-$ ./websocket
+$ ./webchat
 ```
 
 ### First contact
