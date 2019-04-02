@@ -1,0 +1,4 @@
+github.com/gorilla/websocket v1.4.0 h1:WDFjx/TMzVgy9VdMMQi2K2Emtwi2QcUQsztZ/zLaH/Q=
+github.com/gorilla/websocket v1.4.0/go.mod h1:E7qHFY5m1UJ88s3WnNqhKjPHQ0heANvMoAMk2YaljkQ=
+github.com/loganstone/trace v0.0.0-20171217123635-28f532653bfa h1:I1Guvpaf6ga4UmLdpObVVjnTlXsmANQUbgFiXHjDzM4=
+github.com/loganstone/trace v0.0.0-20171217123635-28f532653bfa/go.mod h1:ikfOAJG4EyLZcpAxc28ff8G5e7Qoc7BNj8YfkA4jUqA=
