@@ -15,11 +15,13 @@ import (
 
 const (
 	socketBufferSize  = 1024
-	messageBifferSize = 256
+	messageBufferSize = 256
 )
 
-var upgrader = &websocket.Upgrader{ReadBufferSize: socketBufferSize,
-	WriteBufferSize: socketBufferSize}
+var upgrader = &websocket.Upgrader{
+	ReadBufferSize:  socketBufferSize,
+	WriteBufferSize: socketBufferSize,
+}
 var host = flag.String("host", ":8080", "The host of the application.")
 
 type client struct {
@@ -91,15 +93,16 @@ func (r *room) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	socket, err := upgrader.Upgrade(w, req, nil)
 	if err != nil {
 		log.Fatal("Server Fatal:", err)
-		return
 	}
 	client := &client{
 		socket: socket,
-		send:   make(chan []byte, messageBifferSize),
+		send:   make(chan []byte, messageBufferSize),
 		room:   r,
 	}
 	r.join <- client
-	defer func() { r.leave <- client }()
+	defer func() {
+		r.leave <- client
+	}()
 	go client.write()
 	client.read()
 }
